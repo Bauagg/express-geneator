@@ -30,10 +30,12 @@ const productScemah = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'category'
     },
-    tags: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'tag'
-    }
+    tags: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'tag'
+        }
+    ]
 })
 
 const product = mongoose.model('product', productScemah)

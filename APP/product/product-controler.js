@@ -29,7 +29,7 @@ const getProduct = async (req, res, next) => {
                 }
             }
         }
-        console.log(criteria)
+
         // selesai
         const newProduct = await product
             .find(criteria)
@@ -71,10 +71,10 @@ const postProduct = async (req, res, next) => {
         }
 
         // relasional databases many to many
-        if (payload.tags && payload.tags.length > 0) {
-            const newTag = await tag.find({ name: { $in: payload.tags } })
-            if (newTag.length) {
-                payload = { ...payload, tags: newTag.map(tag => tag._id) }
+        if (payload.tags && Array.isArray(payload.tags) && payload.tags.length > 0) {
+            const newTags = await tag.find({ name: { $in: payload.tags } })
+            if (newTags.length) {
+                payload = { ...payload, tags: newTags.map(tag => tag._id) }
             } else {
                 delete payload.tags
             }
