@@ -6,7 +6,7 @@ const deliveryAdress = require('./models')
 
 const getDeliveryAdress = async (req, res, next) => {
     try {
-        const newDeliveryAdress = await deliveryAdress.find()
+        const newDeliveryAdress = await deliveryAdress.find({ user: req.user._id })
         return res.status(200).json({
             Error: false,
             message: 'Succes',

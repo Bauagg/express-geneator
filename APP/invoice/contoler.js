@@ -9,7 +9,7 @@ const getInvoice = async (req, res, next) => {
         const { order_id } = req.params
         const policy = policyfor(req.user)
 
-        const invoice = await Invoice.findOne({ order: order_id }).populate('user').populate('order')
+        const invoice = await Invoice.findOne({ order: order_id, user: req.user._id }).populate('user').populate('order')
 
         if (!invoice) {
             return res.status(404).json({
