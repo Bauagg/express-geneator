@@ -78,20 +78,24 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
     try {
-        const token = getToken(req)
-
-        const user = await User.findOne(
+        let token = getToken(req)
+        console.log(token)
+        const user = await User.findOneAndUpdate(
             { token: { $in: [token] } },
             { $pull: { token: token } },
             { useFindAndModify: false }
         )
-
         if (token || !user) {
-            res.json({
+            return res.json({
                 error: 0,
                 message: 'Logout berhasil'
             })
         }
+        return res.json({
+            error: false,
+            message: 'Token Berhasil',
+        })
+
     } catch (err) {
         next(err)
     }
@@ -99,13 +103,13 @@ const logout = async (req, res, next) => {
 
 // untuk testing
 const me = (req, res, next) => {
-    if (req.user) {
-        res.json({
+    if (!req.user) {
+        return res.json({
             error: 1,
             message: `you're not login or token expired`
         })
     }
-    res.json(req.user)
+    return res.json(req.user)
 }
 
 module.exports = {
@@ -115,3 +119,6 @@ module.exports = {
     logout,
     me
 }
+
+
+
